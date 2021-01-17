@@ -9,6 +9,7 @@ const { check, validationResult} = require('express-validator');
 // @route  GET api/auth
 // @desc   Test route
 // @access Public
+// Get User info
 router.get('/', auth, async (req, res) => {
   try {
       const user = await User.findById(req.user.id).select('-password') // -password pretend the password from being sent
