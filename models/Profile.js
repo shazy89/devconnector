@@ -35,6 +35,7 @@ const ProfileSchema = new Schema({
   githubusername: {
     type: String
   },
+
   experience: [
     {
       title: {
@@ -64,6 +65,7 @@ const ProfileSchema = new Schema({
       }
     }
   ],
+
   education: [
     {
       school: {
@@ -94,6 +96,7 @@ const ProfileSchema = new Schema({
       }
     }
   ],
+
   social: {
     youtube: {
       type: String
@@ -111,6 +114,7 @@ const ProfileSchema = new Schema({
       type: String
     }
   },
+  
   date: {
     type: Date,
     default: Date.now
