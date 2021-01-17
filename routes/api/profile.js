@@ -28,7 +28,7 @@ router.get('/me', auth, async(req, res) => {
 router.post('/', [auth, 
    check('status', 'Status is required').not().isEmpty(),
    check('skills', 'Skills is required').not().isEmpty()   
-], (req, res) => {
+], async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).json({ erors: errors.array() })
@@ -45,11 +45,36 @@ router.post('/', [auth,
     if (status) profileFields.status = status;
     if (githubusername) profileFields.githubusername = githubusername;
     if(skills) {
-        
         profileFields.skills = skills.split(',').map(skill => skill.trim())
     }
-    console.log(profileFields.skills)
-    res.send('Hello')
+    // Built social objecy
+    profileFields.social = {};
+    if(youtube) profileFields.social.youtube = youtube;
+    if(facebook) profileFields.social.facebook = facebook;
+    if(twitter) profileFields.social.twitter = twitter;
+    if(instagram) profileFields.social.instagram = instagram;
+    if(linkedin) profileFields.social.linkedin = linkedin;
+
+    try {
+        let profile = await Profile.findOne({ user: req.user.id });
+        if(profile) {
+            // Update
+            profile = await Profile.findOneAndUpdate(
+                { user: req.user.id }, 
+                { $set: profileFields },
+                { new: true } 
+           );
+           return res.json(profile);
+      };
+       // Create
+          profile = new Profile(profileFields);
+          await Profile.save();
+          res.json(profile);
+            
+    } catch (error) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
 })
 
 module.exports = router;
