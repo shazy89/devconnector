@@ -25,7 +25,7 @@ router.get('/me', auth, async(req, res) => {
 // @desc   Create or update user profile
 // @access Private
 
-router.post('/', [auth, 
+router.post('/', [ auth , 
    check('status', 'Status is required').not().isEmpty(),
    check('skills', 'Skills is required').not().isEmpty()   
 ], async (req, res) => {
@@ -68,11 +68,12 @@ router.post('/', [auth,
       };
        // Create
           profile = new Profile(profileFields);
-          await Profile.save();
+          await profile.save();
           res.json(profile);
+  
             
     } catch (error) {
-        console.error(err.message);
+        console.error(error.message);
         res.status(500).send('Server error');
     }
 })
