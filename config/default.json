@@ -1,3 +1,4 @@
 {
-    "mongoURI": "mongodb+srv://ED:2012470525@cluster0.es4ed.mongodb.net/<dbname>?retryWrites=true&w=majority"
+    "mongoURI": "mongodb+srv://ED:2012470525@cluster0.es4ed.mongodb.net/<dbname>?retryWrites=true&w=majority",
+    "jwtSecret": "mernsecrettoken"
 }
