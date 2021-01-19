@@ -16,6 +16,7 @@ router.get('/me', auth, async(req, res) => {
         if(!profile) {
             return res.status(400).json({msg: 'There is no profile for this user'})
         }
+        res.json(profile)
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server Error');
@@ -84,7 +85,6 @@ router.post('/', [ auth ,
 router.get('/', async (req, res) => {
     try {                                               // from user collection array of fields [name and avatar]
         const profiles = await Profile.find().populate('user', ['name', 'avatar']);
-        
         res.json(profiles)
     } catch (err) {
         console.error(err);
@@ -93,3 +93,4 @@ router.get('/', async (req, res) => {
 })
 
 module.exports = router;
+        
