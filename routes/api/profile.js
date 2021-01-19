@@ -22,7 +22,7 @@ router.get('/me', auth, async(req, res) => {
     }
 });
 // @route  Post api/profile
-// @desc   Create or update user profile
+// @desc   Create or Update user profile
 // @access Private
 
 router.post('/', [ auth , 
@@ -76,6 +76,10 @@ router.post('/', [ auth ,
         console.error(error.message);
         res.status(500).send('Server error');
     }
-})
+});
+
+// @route  GET api/profile
+// @desc   Get all profiles
+// @access Public
 
 module.exports = router;
