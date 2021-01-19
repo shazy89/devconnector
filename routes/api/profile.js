@@ -13,7 +13,7 @@ router.get('/me', auth, async(req, res) => {
     try {
         const profile = await Profile.findOne({ user: req.user.id }).populate('user',
         ['name', 'avatar']); // pusing populate we have acces to user model attrtibutes
-        if(!profile) {
+        if(!profile.length) {
             return res.status(400).json({msg: 'There is no profile for this user'})
         }
         res.json(profile)
@@ -89,8 +89,8 @@ router.get('/', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
-    }
-})
+    };
+});
 
 // @route  GET api/profile/user/:user_id
 // @desc   Get profile by user ID
@@ -98,12 +98,38 @@ router.get('/', async (req, res) => {
 router.get('/user/:user_id', async (req, res) => {
     try {                                               // from user collection array of fields [name and avatar]
         const profile = await Profile.find({ user: req.params.user_id }).populate('user', ['name', 'avatar']);
-        if(!profile) return res.status(400).json({ msg: 'There is no profile for this user'});
+        if(!profile.length) {
+            return res.status(400).json({msg: 'Profile not found'})
+        };
+
         res.json(profile);
     } catch (err) {
         console.error(err);
+        if(err.kind == 'ObjectId'){
+            return res.status(400).json({msg: 'Profile not found'})
+        };
         res.status(500).send('Server Error');
-    }
-})
+    };
+});
+
+// @route  DELETE api/profile
+// @desc   Delete profile, user & posts
+// @access Private
+
+router.delete('/', auth, async (req, res) => {
+    try {     
+        console.log(req.user.id)
+          // Remove profile
+          await Profile.findOneAndRemove({ user: req.user.id});
+          // Remove user
+          await User.findOneAndRemove({ _id: req.user.id});
+
+        res.json({ msg: 'User deleted'});
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    };
+});
+
 module.exports = router;
         
