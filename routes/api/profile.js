@@ -131,5 +131,13 @@ router.delete('/', auth, async (req, res) => {
     };
 });
 
+// @route  PUT api/profile/expiience
+// @desc   Add profile expirience
+// @access Private
+
+router.put('expirience', auth, async (req, res) => {
+    
+})
+
 module.exports = router;
         
