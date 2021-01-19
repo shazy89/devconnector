@@ -79,7 +79,7 @@ router.post('/', [ auth ,
     }
 });
 
-// @route  GET api/profiles
+// @route  GET api/profile
 // @desc   Get all profiles
 // @access Public
 router.get('/', async (req, res) => {
@@ -92,5 +92,18 @@ router.get('/', async (req, res) => {
     }
 })
 
+// @route  GET api/profile/user/:user_id
+// @desc   Get profile by user ID
+// @access Public
+router.get('/user/:user_id', async (req, res) => {
+    try {                                               // from user collection array of fields [name and avatar]
+        const profile = await Profile.find({ user: req.params.user_id }).populate('user', ['name', 'avatar']);
+        if(!profile) return res.status(400).json({ msg: 'There is no profile for this user'});
+        res.json(profile);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+})
 module.exports = router;
         
