@@ -5,9 +5,6 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const { check, validationResult} = require('express-validator');
 
-
-
-
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 
@@ -274,4 +271,7 @@ router.get('/github/:username', async (req, res) => {
     }
   });
 module.exports = router;
+
+
+
         
