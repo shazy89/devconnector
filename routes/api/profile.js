@@ -14,7 +14,6 @@ router.get('/me', auth, async(req, res) => {
         
         const profile = await Profile.findOne({ user: req.user.id }).populate('user',
         ['name', 'avatar']); // pusing populate we have acces to user model attrtibutes
-        console.log(profile)
         if(!profile) {
             return res.status(400).json({msg: 'There is no profile for this user'})
         }
@@ -134,11 +133,11 @@ router.delete('/', auth, async (req, res) => {
     };
 });
 
-// @route  PUT api/profile/expiience
-// @desc   Add profile expirience
+// @route  PUT api/profile/experience
+// @desc   Add profile experience
 // @access Private
 
-router.put('/expirience', [auth, 
+router.put('/experience', [auth, 
  check('title', 'Title is required').not().isEmpty(),
  check('company', 'Company is required').not().isEmpty(),
  check('from', 'From date is required').not().isEmpty()
@@ -168,7 +167,26 @@ router.put('/expirience', [auth,
    } catch (err) {
        console.error(err.message);
        res.status(500).send('Server Error');
-   }
+   };
+});
+
+// @route  DELETE api/profile/expiience/:exp_id
+// @desc   Delete experience from profile
+// @access Private
+
+router.delete('/experience/:exp_id', auth, async (req, res) => {
+    try {
+        const profile = await Profile.findOne({ user: req.user.id });
+        // Get remove index
+        const removeIndex = profile.experience.map(item => item.id).indexOf(req.params.exp_id);
+        profile.experience.splice(removeIndex, 1);
+        await profile.save();
+        
+        res.json(profile)
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
 })
 
 module.exports = router;
