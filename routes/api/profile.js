@@ -11,6 +11,7 @@ const User = require('../../models/User');
 // @access Private
 router.get('/me', auth, async(req, res) => {
     try {
+        
         const profile = await Profile.findOne({ user: req.user.id }).populate('user',
         ['name', 'avatar']); // pusing populate we have acces to user model attrtibutes
         if(!profile.length) {
@@ -57,6 +58,7 @@ router.post('/', [ auth ,
     if(linkedin) profileFields.social.linkedin = linkedin;
 
     try {
+        
         let profile = await Profile.findOne({ user: req.user.id });
         if(profile) {
             // Update
@@ -118,7 +120,7 @@ router.get('/user/:user_id', async (req, res) => {
 
 router.delete('/', auth, async (req, res) => {
     try {     
-        console.log(req.user.id)
+        
           // Remove profile
           await Profile.findOneAndRemove({ user: req.user.id});
           // Remove user
@@ -135,8 +137,37 @@ router.delete('/', auth, async (req, res) => {
 // @desc   Add profile expirience
 // @access Private
 
-router.put('expirience', auth, async (req, res) => {
-    
+router.put('/expirience', [auth, 
+ check('title', 'Title is required').not().isEmpty(),
+ check('company', 'Company is required').not().isEmpty(),
+ check('from', 'From date is required').not().isEmpty()
+], async (req, res) => {
+   const errors = validationResult(req);
+   if(!errors.isEmpty()) {
+       return res.status(400).json({ errprs: errors.array() });
+   }
+     const { title, company, location, from, to, current, description } = req.body;
+   const newExp = {
+       title,
+       company,
+       location,
+       from,
+       to,
+       current,
+       description
+   }
+   try {
+       const profile = await Profile.findOne({ user: req.user.id });
+        console.log(newExp)
+        profile.experience.unshift(newExp);
+
+        await profile.save();
+
+        res.json(profile)
+   } catch (err) {
+       console.error(err.message);
+       res.status(500).send('Server Error');
+   }
 })
 
 module.exports = router;
