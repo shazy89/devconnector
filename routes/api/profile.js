@@ -14,7 +14,8 @@ router.get('/me', auth, async(req, res) => {
         
         const profile = await Profile.findOne({ user: req.user.id }).populate('user',
         ['name', 'avatar']); // pusing populate we have acces to user model attrtibutes
-        if(!profile.length) {
+        console.log(profile)
+        if(!profile) {
             return res.status(400).json({msg: 'There is no profile for this user'})
         }
         res.json(profile)
@@ -158,7 +159,7 @@ router.put('/expirience', [auth,
    }
    try {
        const profile = await Profile.findOne({ user: req.user.id });
-        console.log(newExp)
+
         profile.experience.unshift(newExp);
 
         await profile.save();
