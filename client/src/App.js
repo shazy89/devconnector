@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Landing from './components/Landing';
+import Navbar from './components/layout/Navbar';
+import Landing from './components/layout/Landing';
 import './App.css';
 
 const App = () => {
@@ -9,9 +9,9 @@ const App = () => {
     <Router>
         <Fragment>
            <Navbar />
-           <Switch>
-            <Route exact path='/' component={Landing} />
-           </Switch>
+
+               <Route  path='/' component={ Landing } />
+
         </Fragment>
     </Router>
   );
