@@ -91,5 +91,7 @@ const Register = ({ setAlert }) => {
         </Fragment>
     )
 };
-
+Register.prototypes = {
+    setAlert: PropTypes.func.isRequired
+}
 export default connect(null, { setAlert })(Register);
