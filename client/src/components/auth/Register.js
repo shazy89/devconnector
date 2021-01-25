@@ -1,9 +1,9 @@
-import React, { Fragment, useState } from 'react'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom';
-import { setAlert } from '../../actions/alert'
-import { register } from '../../actions/auth'
-import PropTypes from 'prop-types'
+import React, { Fragment, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
+import { setAlert } from '../../actions/alert';
+import { register } from '../../actions/auth';
+import PropTypes from 'prop-types';
 
 const Register = ({ setAlert, register }) => {
     const [formData, setFormData] = useState({
@@ -37,6 +37,9 @@ const Register = ({ setAlert, register }) => {
          //  }
        }
    }
+   if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
     return (
         <Fragment>
@@ -92,7 +95,13 @@ const Register = ({ setAlert, register }) => {
         </Fragment>
     )
 };
-Register.prototypes = {
-    setAlert: PropTypes.func.isRequired
-}
-export default connect(null, { setAlert, register })(Register);
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+};
+const mapStateProps = {
+  isAuthenticated: state.auth.isAuthenticated
+};
+
+export default connect(mapStateProps, { setAlert, register })(Register);
