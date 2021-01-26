@@ -4,16 +4,17 @@ import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner'
 import { getCurrentProfile } from '../../actions/profile';
 
-function Dashboard({getCurrentProfile, auth, profile: { profile, loading}}) {
+const Dashboard = ({getCurrentProfile, auth: { user }, profile: { profile, loading }}) => {
+    
     useEffect(() => {
         getCurrentProfile();
       }, [getCurrentProfile]);
 
-return (
-    <div>
-        HELLO
-    </div>
-)
+return loading && profile === null ? <Spinner /> : <Fragment>
+    <h1 className="large test-primary">Dashboard</h1>
+    <p className="lead"><i className="fas fa-user"></i>Welcome { user && user.name}</p>
+    { profile !== null ? <Fragment>HAS</Fragment> : <Fragment>HAS NOT</Fragment> } 
+</Fragment>
 }
 Dashboard.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
@@ -27,3 +28,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
 
+// 
+//  
