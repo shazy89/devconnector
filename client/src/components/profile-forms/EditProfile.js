@@ -1,49 +1,25 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useState, Fragment } from "react";
+import { Link, withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { createProfile, getCurrentProfile } from '../../actions/profile';
 
-const initialState = {
-  company: '',
-  website: '',
-  location: '',
-  status: '',
-  skills: '',
-  githubusername: '',
-  bio: '',
-  twitter: '',
-  facebook: '',
-  linkedin: '',
-  youtube: '',
-  instagram: ''
-};
-
-const ProfileForm = ({
-  profile: { profile, loading },
-  createProfile,
-  getCurrentProfile,
-  history
-}) => {
-  const [formData, setFormData] = useState(initialState);
-
-  const [displaySocialInputs, toggleSocialInputs] = useState(false);
-
-  useEffect(() => {
-    if (!profile) getCurrentProfile();
-    if (!loading && profile) {
-      const profileData = { ...initialState };
-      for (const key in profile) {
-        if (key in profileData) profileData[key] = profile[key];
-      }
-      for (const key in profile.social) {
-        if (key in profileData) profileData[key] = profile.social[key];
-      }
-      if (Array.isArray(profileData.skills))
-        profileData.skills = profileData.skills.join(', ');
-      setFormData(profileData);
-    }
-  }, [loading, getCurrentProfile, profile]);
+const EditProfile = ({ createProfile, history, getCurrentProfile }) => {
+  const [formData, setFormData] = useState({
+    company: "",
+    website: "",
+    location: "",
+    status: "",
+    skills: "",
+    githubusername: "",
+    bio: "",
+    twitter: "",
+    facebook: "",
+    linkedin: "",
+    youtube: "",
+    instagram: "",
+  });
+  const [displaySocialInputs, toogleSocialInputs] = useState(false);
 
   const {
     company,
@@ -57,28 +33,29 @@ const ProfileForm = ({
     facebook,
     linkedin,
     youtube,
-    instagram
+    instagram,
   } = formData;
-
-  const onChange = e =>
+  const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    createProfile(formData, history, profile ? true : false);
+    createProfile(formData, history)
+
   };
 
   return (
     <Fragment>
-      <h1 className="large text-primary">Edit Your Profile</h1>
+      <h1 className="large text-primary">Create Your Profile</h1>
       <p className="lead">
-        <i className="fas fa-user" /> Add some changes to your profile
+        <i className="fas fa-user"></i> Let's get some information to make your
+        profile stand out
       </p>
       <small>* = required field</small>
       <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
           <select name="status" value={status} onChange={onChange}>
-            <option>* Select Professional Status</option>
+            <option value="0">* Select Professional Status</option>
             <option value="Developer">Developer</option>
             <option value="Junior Developer">Junior Developer</option>
             <option value="Senior Developer">Senior Developer</option>
@@ -159,13 +136,13 @@ const ProfileForm = ({
             name="bio"
             value={bio}
             onChange={onChange}
-          />
+          ></textarea>
           <small className="form-text">Tell us a little about yourself</small>
         </div>
 
         <div className="my-2">
           <button
-            onClick={() => toggleSocialInputs(!displaySocialInputs)}
+            onClick={() => toogleSocialInputs(!displaySocialInputs)}
             type="button"
             className="btn btn-light"
           >
@@ -173,11 +150,10 @@ const ProfileForm = ({
           </button>
           <span>Optional</span>
         </div>
-
         {displaySocialInputs && (
           <Fragment>
             <div className="form-group social-input">
-              <i className="fab fa-twitter fa-2x" />
+              <i className="fab fa-twitter fa-2x"></i>
               <input
                 type="text"
                 placeholder="Twitter URL"
@@ -188,7 +164,7 @@ const ProfileForm = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-facebook fa-2x" />
+              <i className="fab fa-facebook fa-2x"></i>
               <input
                 type="text"
                 placeholder="Facebook URL"
@@ -199,7 +175,7 @@ const ProfileForm = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-youtube fa-2x" />
+              <i className="fab fa-youtube fa-2x"></i>
               <input
                 type="text"
                 placeholder="YouTube URL"
@@ -210,7 +186,7 @@ const ProfileForm = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-linkedin fa-2x" />
+              <i className="fab fa-linkedin fa-2x"></i>
               <input
                 type="text"
                 placeholder="Linkedin URL"
@@ -221,7 +197,7 @@ const ProfileForm = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-instagram fa-2x" />
+              <i className="fab fa-instagram fa-2x"></i>
               <input
                 type="text"
                 placeholder="Instagram URL"
@@ -234,24 +210,22 @@ const ProfileForm = ({
         )}
 
         <input type="submit" className="btn btn-primary my-1" />
-        <Link className="btn btn-light my-1" to="/dashboard">
+        <a className="btn btn-light my-1" href="dashboard.html">
           Go Back
-        </Link>
+        </a>
       </form>
     </Fragment>
   );
 };
 
-ProfileForm.propTypes = {
+EditProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  profile: state.profile
+const mapStateToProps = (state) => ({
+    profile: state.profile
 });
 
-export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
-  ProfileForm
-);
+export default connect(mapStateToProps, { createProfile, getCurrentProfile })(withRouter(EditProfile));
