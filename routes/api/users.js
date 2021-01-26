@@ -7,7 +7,7 @@ const config = require('config');
 const { check, validationResult} = require('express-validator');
 const User = require('../../models/User');
 
-// @route  GET api/users 
+// @route  POST api/users 
 // @desc   Register user
 // @access Public
 router.post('/',[
@@ -35,7 +35,7 @@ router.post('/',[
             s: '200',
             r: 'pg',
             d: 'mm'
-        }) 
+        }); 
         user = new User({
             name, email, avatar, password
         });
