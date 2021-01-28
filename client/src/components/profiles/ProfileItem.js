@@ -11,7 +11,6 @@ const ProfileItem = ({
     skills,
   },
 }) => {
-  console.log(_id, name, avatar);
   return (
     <div className="profile bg-light">
       <img src={avatar} alt="" className="round-img" />
@@ -24,7 +23,6 @@ const ProfileItem = ({
         <Link to={`/profile/${_id}`} className="btn btn-primary">
           View Profile
         </Link>
-        a
       </div>
       <ul>
         {skills.slice(0, 4).map((skill, index) => (
