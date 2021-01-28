@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { deleteExperience } from "../../actions/profile";
 import Moment from "react-moment";
-import formatDate from "../../utils/formatDate";
 
 const Experience = ({ experience, deleteExperience }) => {
   const experiences = experience.map((exp) => (
