@@ -69,7 +69,7 @@ const AddExperience = ({ addExperience, history }) => {
               type="checkbox"
               name="current"
               onChange={(e) => {
-                setFormData({ ...formDatam, current: !current });
+                setFormData({ ...formData, current: !current });
                 togleDisabled(!toDateDisabled);
               }}
               value={current}
