@@ -33,6 +33,7 @@ const ProfileForm = ({
     if (!profile) getCurrentProfile();
     if (!loading && profile) {
       const profileData = { ...initialState };
+      console.log( profileData)
       for (const key in profile) {
         if (key in profileData) profileData[key] = profile[key];
       }
@@ -44,6 +45,7 @@ const ProfileForm = ({
       setFormData(profileData);
     }
   }, [loading, getCurrentProfile, profile]);
+        
 
   const {
     company,
