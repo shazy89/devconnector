@@ -13,6 +13,7 @@ export const getPosts = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
+    //  console.error(err);
     dispatch({
       type: POST_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
