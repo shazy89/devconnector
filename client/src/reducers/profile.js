@@ -6,6 +6,7 @@ import {
   PROFILE_ERROR,
   CLEAR_PROFILE,
   UPDATE_PROFILE,
+  LOGOUT,
 } from "../actions/types";
 
 const initialState = {
@@ -51,6 +52,7 @@ export default function (state = initialState, action) {
         loading: false,
       };
     case CLEAR_PROFILE:
+    case LOGOUT:
       return {
         ...state,
         profile: null,

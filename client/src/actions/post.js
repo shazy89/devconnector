@@ -3,13 +3,14 @@ import api from "../utils/api";
 import { setAlert } from "./alert";
 import { GET_POSTS, POST_ERROR } from "./types";
 
-//Get posts
+// Get posts
 export const getPosts = () => async (dispatch) => {
   try {
-    const res = await api.get("/posts");
+    const res = await axios.get("api/posts");
+
     dispatch({
       type: GET_POSTS,
-      peyload: res.data,
+      payload: res.data,
     });
   } catch (err) {
     dispatch({
