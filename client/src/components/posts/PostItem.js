@@ -21,16 +21,19 @@ const PostItem = ({
         Posted on <Moment format="YYYY/MM/DD">{date}</Moment>
       </p>
       <button type="button" class="btn btn-light">
-        <i class="fas fa-thumbs-up"></i>
-        <span>{likes.length}</span>
+        <i class="fas fa-thumbs-up"></i>{" "}
+        {likes.length > 0 && <span>{likes.length}</span>}
       </button>
       <button type="button" class="btn btn-light">
         <i class="fas fa-thumbs-down"></i>
       </button>
-      <Link href="post.html" class="btn btn-primary">
-        Discussion <span class="comment-count">{comments.length}</span>
+      <Link to={`/post/${_id}`} class="btn btn-primary">
+        Discussion{" "}
+        {comments.length > 0 && (
+          <span class="comment-count">{comments.length}</span>
+        )}
       </Link>
-      {!auth.loading && iser === auth.user._id && (
+      {!auth.loading && user === auth.user._id && (
         <button type="button" class="btn btn-danger">
           <i class="fas fa-times"></i>
         </button>
