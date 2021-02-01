@@ -8,8 +8,11 @@ import PostItem from "../posts/PostItem";
 //import CommentItem from "../post/CommentItem";
 import { getPost } from "../../actions/post";
 
-const Post = (props) => {
-  return <div></div>;
+const Post = ({ getPost, post: { post, loading }, match }) => {
+  useEffect(() => {
+    getPost(match.params.id); //get the id from params with match
+  }, [getPost, match.params.id]);
+  return <div>POST</div>;
 };
 
 Post.propTypes = {
