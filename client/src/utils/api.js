@@ -4,9 +4,9 @@ import { LOGOUT } from "../actions/types";
 
 const api = axios.create({
   baseURL: "/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
+ // headers: {
+ //   "Content-Type": "application/json",
+ // },
 });
 /**
  intercept any error responses from the api
@@ -16,14 +16,18 @@ const api = axios.create({
  logout the user if the token has expired
 **/
 
-// api.interceptors.response.use(
-//   (res) => res,
-//   (err) => {
-//     if (err.response.status === 401) {
-//       store.dispatch({ type: LOGOUT });
-//     }
-//     return Promise.reject(err);
-//   }
-// );
+api.interceptors.request.use(
+  async (config) => {
+     const token = await localStorage.getItem('token')
+     if (token) {
+        // asign token to the headers 
+        config.headers.Authorization = `Bearer ${token}`
+     }
+     return config
+  },
+  (err) => {
+     return Promise.reject(err);
+  }
+)
 
 export default api;

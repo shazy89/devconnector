@@ -12,7 +12,19 @@ const Post = ({ getPost, post: { post, loading }, match }) => {
   useEffect(() => {
     getPost(match.params.id); //get the id from params with match
   }, [getPost, match.params.id]);
-  return <div>POST</div>;
+
+  return loading || post === null ? (
+    <Spinner />
+  ) : (
+    <Fragment>
+      <Fragment>
+        <Link to="/posts" className="btn">
+          Back To Posts
+        </Link>
+        <PostItem post={post} showActions={false} />
+      </Fragment>
+    </Fragment>
+  );
 };
 
 Post.propTypes = {
